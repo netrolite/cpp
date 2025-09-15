@@ -1,58 +1,73 @@
-/*
-  datatypes
-  int
-  float double
-  long double
-  char min 1 byte
-  wchar_t
-  bool 1 byte
-  void
-  std::nullptr_t
-  long min 4 bytes
-  long long min 8 bytes
-*/
-
 #include <iostream>
+#include <random>
 
-// int main() {
-//   double F = 0;
-//
-//   std::cout << "Input F: ";
-//   std::cin >> F;
-//
-//   double C = 5. / 9. * (F - 32.);
-//   std::cout << "Celcius = " << C << std::endl;
-//
-//   if (C >= 30.0) {
-//     std::cout << "Жарко\n";
-//   } else if (C >= 10.0) {
-//     std::cout << "Нормально\n";
-//   } else {
-//     std::cout << "Холодно\n";
-//   }
-//
-//   return 0;
-// }
+enum Move { ROCK = 1, PAPER = 2, SCISSORS = 3 };
 
 int main() {
-  float x = 0;
-  float y = 0;
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> dist(1, 3);
 
-  std::cout << "x = ";
-  std::cin >> x;
+  // rock = 1
+  // paper = 2
+  // scissors = 3
 
-  std::cout << "y = ";
-  std::cin >> y;
+  std::cout << "Игра камень ножницы бумага\n";
+  int user_score = 0;
+  int machine_score = 0;
 
-  double r2 = (x * x) + (y * y);
-  if (r2 >= 1 && r2 <= 4 && r2 != 10) {
-    std::cout << "Победа\n";
-  } else {
-    std::cout << "Не победа\n";
+  while (true) {
+    std::cout << "Вы: " << user_score << std::endl;
+    std::cout << "Машина: " << machine_score << std::endl;
+
+    int machine_move = dist(gen);
+    int user_move;
+
+    while (true) {
+      std::cout << "Ваш ход:\n1) Камень\n2) Ножницы\n3) Бумага\n";
+      std::cin >> user_move;
+
+      if (user_move != 1 && user_move != 2 && user_move != 3) {
+        std::cout << "Неизвестная комманда\n";
+      } else {
+        break;
+      }
+    }
+
+    if (user_move == machine_move) {
+      std::cout << "Ничья\n";
+    } else if (user_move == ROCK) {
+      if (machine_move == SCISSORS) {
+        std::cout << "Вы выиграли\n";
+        user_score += 1;
+      } else {
+        std::cout << "Вы проиграли\n";
+        machine_score += 1;
+      }
+    } else if (user_move == PAPER) {
+      if (machine_move == ROCK) {
+        std::cout << "Вы выиграли\n";
+        user_score += 1;
+      } else {
+        std::cout << "Вы проиграли\n";
+        machine_score += 1;
+      }
+    } else if (user_move == SCISSORS) {
+      if (machine_move == PAPER) {
+        std::cout << "Вы выиграли\n";
+        user_score += 1;
+      } else {
+        std::cout << "Вы проиграли\n";
+        machine_score += 1;
+      }
+    }
+
+    if (user_score == 3) {
+      std::cout << "Итог игры: Вы победили\n\n\n";
+      exit(0);
+    } else if (machine_score == 3) {
+      std::cout << "Итог игры: Машина победила\n\n\n";
+      exit(0);
+    }
   }
-
-  // returns 10
-  // if (x == 10) {
-  //   std::cout << "true\n";
-  // }
 }
